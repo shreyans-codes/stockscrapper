@@ -1,9 +1,13 @@
+import sys
 import requests
 from bs4 import BeautifulSoup as bs
 
 cookies = {
     'JSESSIONID': 'C6066D538BC5D47B824C0A073B3CCDA5.rtnode2',
 }
+
+args = sys.argv[1:]
+print(args)
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
@@ -20,22 +24,65 @@ headers = {
     'Sec-Fetch-User': '?1',
     'Sec-GPC': '1',
 }
+details = []
+fundamentals = []
 
-response = requests.get(
-    'https://www.topstockresearch.com/rt/Stock/GMRP&UI/FundamentalAnalysis',
-    cookies=cookies,
-    headers=headers,
-)
+for arg in args:
+    details.append(
+        requests.get(
+            'https://www.topstockresearch.com/rt/Stock/{}/BirdsEyeView'.format(
+                arg),
+            cookies=cookies,
+            headers=headers,
+        )
+    )
+    fundamentals.append(requests.get(
+        'https://www.topstockresearch.com/rt/Stock/{}/FundamentalAnalysis'.format(
+            arg),
+        cookies=cookies,
+        headers=headers,
+    ))
+for response in details:
+    sexy_body = bs(response.content, 'html.parser')
 
-sexy_body = bs(response.content, 'html.parser')
+    table_rows = sexy_body.find_all('tr')
 
-table_rows = sexy_body.find_all('tr')
+    # Loop through rows to find the data in table cells (td)
+    for row in table_rows:
+        cells = row.find_all('td')
+        if len(cells) == 2:  # Assuming each row has two cells (label and value)
+            label = cells[0].text.strip()
+            value = cells[1].text.strip()
+            if (label.startswith("Altman")):
+                altman = float(value)
+                tag = "safe"
+                if (altman < 1.8):
+                    tag = "distress"
+                elif (altman < 3):
+                    tsg = "grey"
+            print(f"{label}: {value}")
 
-# Loop through rows to find the data in table cells (td)
-for row in table_rows:
-    cells = row.find_all('td')
-    if len(cells) == 2:  # Assuming each row has two cells (label and value)
-        label = cells[0].text.strip()
-        value = cells[1].text.strip()
-        print(f"{label}: {value}")
+    print("\n------Details-------\n")
 
+
+for response in fundamentals:
+    sexy_body = bs(response.content, 'html.parser')
+
+    table_rows = sexy_body.find_all('tr')
+
+    # Loop through rows to find the data in table cells (td)
+    for row in table_rows:
+        cells = row.find_all('td')
+        if len(cells) == 2:  # Assuming each row has two cells (label and value)
+            label = cells[0].text.strip()
+            value = cells[1].text.strip()
+            if (label.startswith("Altman")):
+                altman = float(value)
+                tag = "safe"
+                if (altman < 1.8):
+                    tag = "distress"
+                elif (altman < 3):
+                    tsg = "grey"
+            print(f"{label}: {value}")
+
+    print("\n--------------------\n")
