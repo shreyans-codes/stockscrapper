@@ -1,5 +1,17 @@
+import sys
+import schedule, time
 import requests
+import config
 from bs4 import BeautifulSoup as bs
+from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
+
+
+args = sys.argv[1:]
+
+print("Arguments passed:", args)
 
 cookies = {
     'JSESSIONID': 'C6066D538BC5D47B824C0A073B3CCDA5.rtnode2',
@@ -21,6 +33,48 @@ headers = {
     'Sec-GPC': '1',
 }
 
+def send_daily_email():
+    msg = MIMEMultipart()
+    msg['Subject'] = 'Email with Image'
+    msg['From'] = config.email_username
+    msg['To'] = 'shreyans.sethia@skiff.com'
+    html = """\
+    <html>
+      <body>
+        <p>Hello!<br>
+        </p>
+      </body>
+    </html>
+    """
+    # Attach HTML content to the email
+    msg.attach(MIMEText(html, 'html'))
+
+    # Gmail SMTP server settings
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 587  # Port for TLS
+
+    username = config.email_username
+    password = config.email_password
+
+    try:
+        with smtplib.SMTP(smtp_server, smtp_port) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.ehlo()
+            smtp.login(username, password)
+            smtp.send_message(msg)
+        print("Email with image sent successfully!")
+    except Exception as e:
+        print("Error sending email:", e)
+
+
+def job():
+    print("Sending email...")
+
+schedule.every().day.at('08:00').do(send_daily_email)
+schedule.every().day.at('16:00').do(send_daily_email)
+
+
 response = requests.get(
     'https://www.topstockresearch.com/rt/Stock/GMRP&UI/FundamentalAnalysis',
     cookies=cookies,
@@ -39,3 +93,6 @@ for row in table_rows:
         value = cells[1].text.strip()
         print(f"{label}: {value}")
 
+while True:
+    schedule.run_pending()
+    time.sleep(60)
