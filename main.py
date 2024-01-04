@@ -17,22 +17,28 @@ headers = config.headers  # Dictionary containing headers
 args = sys.argv[1:]
 print("Arguments passed:", args)
 
-# Lists to store details and fundamental data for each argument
-details = []
-fundamentals = []
+data_for_args = {}
+
+file_loader = FileSystemLoader('.')
+env = Environment(loader=file_loader)
+template = env.get_template('template.html')
+
 
 # Fetch data for each argument provided
 for arg in args:
     # Fetch details and fundamental data using requests
-    details.append(requests.get('https://www.topstockresearch.com/rt/Stock/{}/BirdsEyeView'.format(arg), cookies=cookies, headers=headers))
-    fundamentals.append(requests.get('https://www.topstockresearch.com/rt/Stock/{}/FundamentalAnalysis'.format(arg), cookies=cookies, headers=headers))
+    data_for_args[arg] = {
+        'details': requests.get('https://www.topstockresearch.com/rt/Stock/{}/BirdsEyeView'.format(arg), cookies=cookies, headers=headers),
+        'fundamentals': requests.get('https://www.topstockresearch.com/rt/Stock/{}/FundamentalAnalysis'.format(arg), cookies=cookies, headers=headers)
+    }
 
 # Dictionary to store sectors and their respective stocks
-sectors = {}
+categorized_stock = []
+sector_dict = {}
 
-# Extract details from the 'details' responses
-for response in details:
-    sexy_body = bs(response.content, 'html.parser')
+for index, arg in enumerate(args):
+    
+    sexy_body = bs(data_for_args[arg]['details'].content, 'html.parser')
     table_rows = sexy_body.find_all('tr')
 
     # Loop through rows to find data in table cells (td)
@@ -48,20 +54,11 @@ for response in details:
                 close = float(value)
             if label.startswith("Code"):
                 code = value
-            print(f"{label}: {value}")
+            # print(f"{label}: {value}")
 
-    print("\n------Details-------\n")
+    # print("\n------Details-------\n")
 
-    # Store stocks under respective sectors in the 'sectors' dictionary
-    if sector in sectors:
-        sectors[sector]['stocks'].append({'name': code, 'close': close})
-    else:
-        sectors[sector] = {'name': sector, 'stocks': [{'name': code, 'close': close}]}
-print(sectors)
-
-# Extract specific data from the 'fundamentals' responses
-for response in fundamentals:
-    sexy_body = bs(response.content, 'html.parser')
+    sexy_body = bs(data_for_args[arg]['fundamentals'].content, 'html.parser')
     table_rows = sexy_body.find_all('tr')
 
     # Loop through rows to find data in table cells (td)
@@ -73,24 +70,52 @@ for response in fundamentals:
             # Extract specific data based on labels
             if label.startswith("Altman"):
                 altman = float(value)
-            print(f"{label}: {value}")
+            if label.startswith("Piotroski"):
+                f_Score = int(float(value))
+            if label.startswith("Sloan"):
+                sloan_ratio = float(value)
+            # print(f"{label}: {value}")
+
+    # print("\n--------------------\n")
+
+    stock_info = {
+        'name': code,
+        'close': close,
+        'altman': altman,
+        'f_score': f_Score,
+        'sloan_ratio': (sloan_ratio *100)
+    }
+
+    # Store stocks under respective sectors in the 'sectors' dictionary
+    if sector_dict.get(sector):
+        sector_dict[sector].append(stock_info)
+    else:
+        sector_dict[sector] = [stock_info]
+
+
+for sector, stocks in sector_dict.items():
+    categorized_stock.append({'name': sector, 'stocks': stocks})
+
+for val in categorized_stock:
+    print(val['stocks'])
+    for stock in val['stocks']:
+        print("Stock name: ", stock['name'])
+
+
+
+html_content = template.render(sectors=categorized_stock)
     
-    print("\n--------------------\n")
+#! Issue: How to map response and fundamentals to the same arg
 
 # Function to send daily email
 def send_daily_email():
     # Construct email message
     msg = MIMEMultipart()
-    msg['Subject'] = 'Email with Image'
+    msg['Subject'] = 'StockScrapper Portfolio Status'
+    recipients = ['shreyans.sethia@skiff.com', 'riyavij2001@gmail.com']
     msg['From'] = config.email_username
-    msg['To'] = 'shreyans.sethia@skiff.com'
-    html = """\
-    <html>
-      <body>
-        <p>Hello!<br></p>
-      </body>
-    </html>
-    """
+    msg['To'] =  ", ".join(recipients)
+    html = html_content
     # Attach HTML content to the email
     msg.attach(MIMEText(html, 'html'))
 
@@ -116,10 +141,10 @@ def send_daily_email():
 def job():
     print("Sending email...")
 
+schedule.every(10).seconds.do(send_daily_email)
 schedule.every().day.at('08:00').do(send_daily_email)
 schedule.every().day.at('16:00').do(send_daily_email)
 
 # Continuously check and run scheduled tasks
 while True:
     schedule.run_pending()
-    time.sleep(60)

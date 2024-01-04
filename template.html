@@ -286,7 +286,8 @@
                                   style="font-family: 'Source Sans Pro',sans-serif; font-size: 21px; line-height: 140%; text-align: left; word-wrap: break-word;">
                                   <p style="line-height: 140%;"><span
                                       style="color: #e03e2d; line-height: 29.4px;"><strong>Sector: </strong><span
-                                        style="color: #000000; line-height: 29.4px;">{{ sector.name }}</span></span></p>
+                                        style="color: #000000; line-height: 29.4px;">{{ sector['name'] }}</span></span>
+                                  </p>
                                 </div>
 
                               </td>
@@ -300,7 +301,7 @@
               </div>
             </div>
             <!-- Stock Data Container -->
-            {% for stock in sector.stocks}
+            {% for stock in sector.stocks %}
             <div class="u-row-container" style="padding: 0px;background-color: transparent">
               <div class="u-row"
                 style="margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
@@ -322,28 +323,30 @@
 
                                 <div class="v-color v-line-height v-font-size"
                                   style="font-family: 'Source Sans Pro',sans-serif; font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                  <p style="line-height: 140%;"><strong>Company: </strong>{{ stock.name }}</p>
-                                  <p style="line-height: 140%;"><strong>Close: </strong>{{ stock.close }}</p>
-                                  <p style="line-height: 140%;"><strong>Altman Z Score: </strong> {{stock.altman}}
-                                    {% if stock.altman > 3 %} {% set sloan_message='Good' %} {%
-                                    elif stock.altman < 1.8 %} {% set sloan_message='Bad' %} {% else %} {% set
-                                      sloan_message='Grey' %} {% endif %} <span class="{{'good_zone' if stock.altman > 3.0 else 'bad_zone' if stock.altman < 1.8 else 'grey_zone'
-                                  }}" style="line-height: 19.6px;">(Good)</span></p>
-                                  <p style="line-height: 140%;"><strong>F - Score: </strong> {{ stock.f_score }} {% if
-                                    stock.f_score > 6 %} {% set sloan_message='Good' %} {%
-                                    elif stock.f_score < 4 %} {% set sloan_message='Bad' %} {% else %} {% set
-                                      sloan_message='Grey' %} {% endif %} <span class="{{'good_zone' if stock.f_score > 6 else 'bad_zone' if stock.f_score < 4 else 'grey_zone'
-                                  }}" style="line-height: 19.6px;">(Bad)</span><span
+                                  <p style="line-height: 140%;"><strong>Company: </strong>{{ stock['name'] }}</p>
+                                  <p style="line-height: 140%;"><strong>Close: </strong>{{ stock['close'] }}</p>
+                                  <p style="line-height: 140%;"><strong>Altman Z Score: </strong> {{stock['altman']}}
+                                    {% if stock['altman'] > 3 %} {% set altman_message='Good' %} {%
+                                    elif stock['altman'] < 1.8 %} {% set altman_message='Bad' %} {% else %} {% set
+                                      altman_message='Grey' %} {% endif %} <span class="{{'good_zone' if stock['altman'] > 3.0 else 'bad_zone' if stock['altman'] < 1.8 else 'grey_zone'
+                                  }}" style="line-height: 19.6px;">({{ altman_message }})</span></p>
+                                  <p style="line-height: 140%;"><strong>F - Score: </strong> {{ stock['f_score'] }} {%
+                                    if
+                                    stock['f_score'] > 6 %} {% set f_message='Good' %} {%
+                                    elif stock['f_score'] < 4 %} {% set f_message='Bad' %} {% else %} {% set
+                                      f_message='Grey' %} {% endif %} <span class="{{'good_zone' if stock['f_score'] > 6 else 'bad_zone' if stock['f_score'] < 4 else 'grey_zone'
+                                  }}" style="line-height: 19.6px;">({{ f_message }})</span><span
                                         style="color: #e03e2d; line-height: 19.6px;"></span></p>
-                                  <p style="line-height: 140%;"><strong>Sloan Ratio: </strong>{{ stock.sloan_ratio
+                                  <p style="line-height: 140%;"><strong>Sloan Ratio: </strong>{{ stock['sloan_ratio']
                                     }}% 
-                                    {% if stock.sloan_ratio > -10 and stock.sloan_ratio < 10 %} {% set
-                                      sloan_message='Good' %} {% elif stock.sloan_ratio < 25 and stock.sloan_ratio> -25
+                                    {% if stock['sloan_ratio'] > -10 and stock['sloan_ratio'] < 10 %} {% set
+                                      sloan_message='Good' %} {% elif stock['sloan_ratio'] < 25 and
+                                      stock['sloan_ratio']> -25
                                       %} {% set sloan_message='Grey' %}
                                       {% else %}
                                       {% set sloan_message = 'Bad' %}
                                       {% endif %}
-                                      <span class="{{'good_zone' if stock.sloan_ratio < 10 and stock.sloan_ratio > -10 else 'bad_zone' if stock.sloan_ratio > 20 and stock.sloan_ratio < -20 else 'grey_zone'
+                                      <span class="{{'good_zone' if stock['sloan_ratio'] < 10 and stock['sloan_ratio'] > -10 else 'bad_zone' if stock['sloan_ratio'] > 20 and stock['sloan_ratio'] < -20 else 'grey_zone'
                                   }}" style="line-height: 19.6px;">({{ sloan_message }})</span><span
                                         style="color: #e03e2d; line-height: 19.6px;"></span><span
                                         style="color: #e03e2d; line-height: 19.6px;"></span></p>
