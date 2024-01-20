@@ -13,15 +13,15 @@
 
   <style type="text/css">
     .good_zone {
-      color: #169179;
+      color: #39d117;
     }
 
     .bad_zone {
       color: #e03e2d;
     }
 
-    .good_zone {
-      color: #433d3d;
+    .grey_zone {
+      color: #ffab44;
     }
 
     @media only screen and (min-width: 520px) {
@@ -204,7 +204,8 @@
                               style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:arial,helvetica,sans-serif;"
                               align="left">
                               <div class="v-color v-line-height v-font-size"
-                                style="font-family: georgia,palatino; font-size: 14px; line-height: 140%; text-align: center; word-wrap: break-word;">
+                                style="font-family: georgia,palatino; font-size: 14px; text-align: center; word-wrap: break-word;">
+                                <p style="line-height: 140%;">Hey {{ recipient_name }},</p>
                                 <p style="line-height: 140%;">Here is your daily portfolio update</p>
                               </div>
 
@@ -243,7 +244,7 @@
                                 <tr>
                                   <td style="padding-right: 0px;padding-left: 0px;" align="center">
 
-                                    <img align="center" border="0" src="images/image-1.jpeg" alt="" title=""
+                                    <img align="center" border="0" src="cid:image1" alt="" title=""
                                       style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 480px;"
                                       width="480" />
                                   </td>
@@ -328,7 +329,7 @@
                                   <p style="line-height: 140%;"><strong>Altman Z Score: </strong> {{stock['altman']}}
                                     {% if stock['altman'] > 3 %} {% set altman_message='Good' %} {%
                                     elif stock['altman'] < 1.8 %} {% set altman_message='Bad' %} {% else %} {% set
-                                      altman_message='Grey' %} {% endif %} <span class="{{'good_zone' if stock['altman'] > 3.0 else 'bad_zone' if stock['altman'] < 1.8 else 'grey_zone'
+                                      altman_message='Grey' %} {% endif %} <span class="{{'good_zone' if altman_message == 'Good' else 'bad_zone' if altman_message == 'Bad' else 'grey_zone'
                                   }}" style="line-height: 19.6px;">({{ altman_message }})</span></p>
                                   <p style="line-height: 140%;"><strong>F - Score: </strong> {{ stock['f_score'] }} {%
                                     if

@@ -1,4 +1,7 @@
+import datetime
+from email.mime.image import MIMEImage
 import sys
+from turtle import st
 import schedule, time
 import requests
 import config
@@ -9,12 +12,16 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
+from database_management import addStock, addStockDetails, getStock, getStockDetails
+
 # Cookies and headers for requests
 cookies = config.cookies  # Dictionary containing cookies
 headers = config.headers  # Dictionary containing headers
 
 # Fetching command-line arguments
-args = sys.argv[1:]
+recipient_name = sys.argv[1]
+recipient_email = sys.argv[2]
+args = sys.argv[3:]
 print("Arguments passed:", args)
 
 data_for_args = {}
@@ -69,11 +76,11 @@ for index, arg in enumerate(args):
             value = cells[1].text.strip()
             # Extract specific data based on labels
             if label.startswith("Altman"):
-                altman = float(value)
+                altman = round(float(value),2)
             if label.startswith("Piotroski"):
                 f_Score = int(float(value))
             if label.startswith("Sloan"):
-                sloan_ratio = float(value)
+                sloan_ratio = round(float(value), 2)
             # print(f"{label}: {value}")
 
     # print("\n--------------------\n")
@@ -85,7 +92,20 @@ for index, arg in enumerate(args):
         'f_score': f_Score,
         'sloan_ratio': (sloan_ratio *100)
     }
-
+    
+    res = getStock(code=code)
+    if not res:
+        addStock(code)
+    
+    res = getStockDetails(code)
+    print("Res = ", res, "\n")
+    if not res:
+        stock = getStock(code)
+        addStockDetails(date=datetime.date.today(), altman=altman, f_score=f_Score, sloan=(sloan_ratio *100), s_id=stock.id)
+        res = getStockDetails(code)
+        print("New res = ", res, "\n")
+    
+    
     # Store stocks under respective sectors in the 'sectors' dictionary
     if sector_dict.get(sector):
         sector_dict[sector].append(stock_info)
@@ -96,28 +116,25 @@ for index, arg in enumerate(args):
 for sector, stocks in sector_dict.items():
     categorized_stock.append({'name': sector, 'stocks': stocks})
 
-for val in categorized_stock:
-    print(val['stocks'])
-    for stock in val['stocks']:
-        print("Stock name: ", stock['name'])
-
-
-
-html_content = template.render(sectors=categorized_stock)
-    
-#! Issue: How to map response and fundamentals to the same arg
+html_content = template.render(sectors=categorized_stock, recipient_name = recipient_name)
 
 # Function to send daily email
 def send_daily_email():
     # Construct email message
     msg = MIMEMultipart()
-    msg['Subject'] = 'StockScrapper Portfolio Status'
-    recipients = ['shreyans.sethia@skiff.com', 'riyavij2001@gmail.com']
+    msg['Subject'] = recipient_name + ' Portfolio Status'
+    # recipients = ['shreyans.sethia@skiff.com', 'amnrj1622@gmail.com']
+    # msg['To'] =  ", ".join(recipients)
     msg['From'] = config.email_username
-    msg['To'] =  ", ".join(recipients)
+    msg['To'] =  recipient_email
     html = html_content
     # Attach HTML content to the email
     msg.attach(MIMEText(html, 'html'))
+
+    with open('images/image-1.jpeg', 'rb') as file:
+        image = MIMEImage(file.read())
+        image.add_header('Content-ID', '<image1>')
+        msg.attach(image)
 
     # SMTP server settings for Gmail
     smtp_server = 'smtp.gmail.com'
@@ -137,14 +154,18 @@ def send_daily_email():
     except Exception as e:
         print("Error sending email:", e)
 
-# Schedule daily emails at specific times
-def job():
-    print("Sending email...")
+#? Uncomment these lines to schedule send, currently congigured for task schedular
 
-schedule.every(10).seconds.do(send_daily_email)
-schedule.every().day.at('08:00').do(send_daily_email)
-schedule.every().day.at('16:00').do(send_daily_email)
+# Schedule daily emails at specific times
+# def job():
+#     print("Sending email...")
+
+# schedule.every(10).seconds.do(send_daily_email)
+# schedule.every().day.at('08:00').do(send_daily_email)
+# schedule.every().day.at('16:00').do(send_daily_email)
 
 # Continuously check and run scheduled tasks
-while True:
-    schedule.run_pending()
+# while True:
+#     schedule.run_pending()
+
+send_daily_email()

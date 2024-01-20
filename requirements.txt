@@ -1,2 +1,4 @@
 schedule
 Jinja2
+sqlalchemy
+PyMySQL
