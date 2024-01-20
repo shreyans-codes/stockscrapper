@@ -2,3 +2,4 @@ schedule
 Jinja2
 sqlalchemy
 PyMySQL
+bs4
