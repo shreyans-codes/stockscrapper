@@ -7,7 +7,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from models import Base, Stock, StockDetails
 
 try:
-    engine = create_engine("mysql+pymysql://root:password@localhost:3306/stockscrapper", echo=True)
+    engine = create_engine("mysql+pymysql://root:password@localhost:3306/stockscrapper")
     session = scoped_session(sessionmaker(autoflush=False, autocommit=False, bind=engine))
     Base.metadata.create_all(engine)
     
@@ -15,8 +15,12 @@ try:
         stock = session.query(Stock).filter_by(code=code).first()
         return stock
     
-    def addStock(code):
-        newStock = Stock(code = code)
+    def getArgStock(arg):
+        stock = session.query(Stock).filter_by(arg=arg).first()
+        return stock
+    
+    def addStock(arg, code, sector):
+        newStock = Stock(arg = arg, code = code, sector = sector)
         session.add(newStock)
         session.commit()
     
@@ -24,12 +28,20 @@ try:
         stock = session.query(Stock).filter_by(code=code).first()
         if not stock:
             return null
-        
         stockDetails = session.query(StockDetails).filter_by(stock_id=stock.id).order_by(StockDetails.date).first()
         return stockDetails
+        
+    def getStockDetailsAllDates(code):
+        stock = session.query(Stock).filter_by(code=code).first()
+        stockDetails = []
+        if stock:
+            stockDetails = session.query(StockDetails).filter_by(stock_id=stock.id).order_by(StockDetails.date).all()
+        
+        return stockDetails
 
-    def addStockDetails(date, altman, f_score, sloan, s_id):
+    def addStockDetails(close, date, altman, f_score, sloan, s_id):
         newStockDetails = StockDetails(
+            close = close,
             date = date,
             altman_z_score = altman,
             f_score = f_score,
