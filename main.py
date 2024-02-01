@@ -134,7 +134,10 @@ for index, arg in enumerate(args):
             addStockDetails(close=close, date=datetime.date.today(), altman=altman, f_score=f_Score, sloan=(sloan_ratio *100), s_id=stock.id)
             sd = getStockDetails(code)
             print("New sd = ", sd.altman_z_score, "\n")
-            
+        else:
+            stock = getStock(code)
+            addStockDetails(close=close, date=datetime.date.today(), altman=altman, f_score=f_Score, sloan=(sloan_ratio *100), s_id=stock.id)
+        
         print("sd = ", sd.altman_z_score, "\n")
         
 

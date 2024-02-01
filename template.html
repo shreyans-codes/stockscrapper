@@ -325,6 +325,7 @@
                                 <div class="v-color v-line-height v-font-size"
                                   style="font-family: 'Source Sans Pro',sans-serif; font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
                                   <p style="line-height: 140%;"><strong>Company: </strong>{{ stock['name'] }}</p>
+
                                   <p style="line-height: 140%;"><strong>Close: </strong>{{ stock['close'] }}</p>
                                   <p style="line-height: 140%;"><strong>Altman Z Score: </strong> {{stock['altman']}}
                                     {% if stock['altman'] > 3 %} {% set altman_message='Good' %} {%

@@ -291,7 +291,7 @@
                                                             align="left">
 
                                                             <div class="v-text-align"
-                                                                style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
+                                                                style="font-size: 21px; line-height: 140%; text-align: left; word-wrap: break-word;">
                                                                 <p style="line-height: 140%;"><strong>Sector:
                                                                     </strong>{{ sector['name'] }}</p>
                                                             </div>
@@ -310,6 +310,99 @@
                         </div>
                     </div>
                     {% for stock in sector.stocks %}
+                    <!-- Code -->
+                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
+                        <div class="u-row v-row-columns-background-color-background-color no-stack"
+                            style="margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
+                            <div
+                                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
+                                <!-- <div class="u-col u-col-33p33"
+                                    style="max-width: 320px;min-width: 166.67px;display: table-cell;vertical-align: top;">
+                                    <div
+                                        style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                                        <div
+                                            style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                                            <table id="u_content_text_6" style="font-family:'Montserrat',sans-serif;"
+                                                role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                                                border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;"
+                                                            align="left">
+
+                                                            <div class="v-text-align"
+                                                                style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
+                                                                <p style="line-height: 140%;">Code/Name</p>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="u-col u-col-33p33"
+                                    style="max-width: 320px;min-width: 166.67px;display: table-cell;vertical-align: top;">
+                                    <div
+                                        style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+
+                                        <div
+                                            style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                                            <table id="u_content_text_7" style="font-family:'Montserrat',sans-serif;"
+                                                role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                                                border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;"
+                                                            align="left">
+
+                                                            <div class="v-text-align"
+                                                                style="font-size: 18px; line-height: 140%; text-align: left; word-wrap: break-word;">
+                                                                <p style="line-height: 140%;">
+                                                                    <strong>
+
+                                                                        {{ stock['name'] }}
+                                                                    </strong>
+                                                                </p>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="u-col u-col-33p33"
+                                        style="max-width: 320px;min-width: 166.67px;display: table-cell;vertical-align: top;">
+                                        <div
+                                            style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                                            <div
+                                                style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                                                <table id="u_content_text_8" style="font-family:'Montserrat',sans-serif;"
+                                                    role="presentation" cellpadding="0" cellspacing="0" width="100%"
+                                                    border="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;"
+                                                                align="left">
+    
+                                                                <div class="v-text-align"
+                                                                    style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
+                                                                    <p style="line-height: 140%;">{{ stock['name'] }}</p>
+                                                                </div>
+    
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                            </div>
+                        </div>
+                    </div>
                     <!-- Stock Table Header -->
                     <div id="u_row_3" class="u-row-container" style="padding: 0px;background-color: transparent">
                         <div class="u-row v-row-columns-background-color-background-color no-stack"
@@ -404,94 +497,6 @@
                         </div>
                     </div>
                     <!-- Stock Details Row -->
-                    <!-- Code -->
-                    <div class="u-row-container" style="padding: 0px;background-color: transparent">
-                        <div class="u-row v-row-columns-background-color-background-color no-stack"
-                            style="margin: 0 auto;min-width: 320px;max-width: 500px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-                            <div
-                                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                                <div class="u-col u-col-33p33"
-                                    style="max-width: 320px;min-width: 166.67px;display: table-cell;vertical-align: top;">
-                                    <div
-                                        style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                                        <div
-                                            style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                                            <table id="u_content_text_6" style="font-family:'Montserrat',sans-serif;"
-                                                role="presentation" cellpadding="0" cellspacing="0" width="100%"
-                                                border="0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;"
-                                                            align="left">
-
-                                                            <div class="v-text-align"
-                                                                style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                                                <p style="line-height: 140%;">Code/Name</p>
-                                                            </div>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="u-col u-col-33p33"
-                                    style="max-width: 320px;min-width: 166.67px;display: table-cell;vertical-align: top;">
-                                    <div
-                                        style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-
-                                        <div
-                                            style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                                            <table id="u_content_text_7" style="font-family:'Montserrat',sans-serif;"
-                                                role="presentation" cellpadding="0" cellspacing="0" width="100%"
-                                                border="0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;"
-                                                            align="left">
-
-                                                            <div class="v-text-align"
-                                                                style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                                                <p style="line-height: 140%;">{{ stock['name'] }}</p>
-                                                            </div>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="u-col u-col-33p33"
-                                    style="max-width: 320px;min-width: 166.67px;display: table-cell;vertical-align: top;">
-                                    <div
-                                        style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                                        <div
-                                            style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                                            <table id="u_content_text_8" style="font-family:'Montserrat',sans-serif;"
-                                                role="presentation" cellpadding="0" cellspacing="0" width="100%"
-                                                border="0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;"
-                                                            align="left">
-
-                                                            <div class="v-text-align"
-                                                                style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                                                <p style="line-height: 140%;">{{ stock['name'] }}</p>
-                                                            </div>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- Close -->
                     <div class="u-row-container" style="padding: 0px;background-color: transparent">
                         <div class="u-row v-row-columns-background-color-background-color no-stack"
@@ -919,6 +924,11 @@
                             </div>
                         </div>
                     </div>
+                    <!-- HR Line -->
+                    <div>
+                        <hr class="u-row">
+                    </div>
+
                     {% endfor %}
                     {% endfor %}
                     <!-- Footer message -->
