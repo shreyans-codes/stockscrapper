@@ -28,14 +28,14 @@ try:
         stock = session.query(Stock).filter_by(code=code).first()
         if not stock:
             return null
-        stockDetails = session.query(StockDetails).filter_by(stock_id=stock.id).order_by(StockDetails.date).first()
+        stockDetails = session.query(StockDetails).filter_by(stock_id=stock.id).order_by(StockDetails.date.desc()).first()
         return stockDetails
         
     def getStockDetailsAllDates(code):
         stock = session.query(Stock).filter_by(code=code).first()
         stockDetails = []
         if stock:
-            stockDetails = session.query(StockDetails).filter_by(stock_id=stock.id).order_by(StockDetails.date).all()
+            stockDetails = session.query(StockDetails).filter_by(stock_id=stock.id).order_by(StockDetails.date.desc()).all()
         
         return stockDetails
 
