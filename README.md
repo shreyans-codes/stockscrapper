@@ -1,4 +1,7 @@
-﻿# stockscrapper
+# Note
+You can find the latest version of the project [-> here <-](https://github.com/riyavij2001/TrackMyStock)
+
+# stockscrapper
 A simple and effective CLI tool to send emails about stocks in your portfolio.
 
 ## Description
